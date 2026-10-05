@@ -11,12 +11,17 @@ import badIcon from "./assets/thumbs-down.svg";
 
 /* fix this type with Article type */
 type ArticleListProps = {
-  showRank: any;
-  showBoard: any;
-  showWriter: any;
-  showHit: any;
-  showTimeAgo: any;
-  data: any[];
+  showRank: boolean;
+  showBoard: boolean;
+  showWriter: boolean;
+  showHit: boolean;
+  showTimeAgo: boolean;
+  data: Article[];
+};
+
+type SubInfo = {
+  text: string;
+  strong?: boolean;
 };
 
 const ArticleList = ({
@@ -29,12 +34,36 @@ const ArticleList = ({
 }: ArticleListProps) => {
   return (
     <section className="mt-5 w-full max-w-[600px] border border-[#d9dfe6] bg-white px-9 py-1">
-      {data.map((article) => (
-        <article
-          //key={article.rank}
+      {data.map((article) => {
+        const sub = [
+          showBoard && {
+            text: article.board,
+            strong: true
+          },
+          showWriter && {
+            text: article.writter
+          },
+          showHit && {
+            text: '조회 ${article.hit}'
+          },
+          showTimeAgo && {
+            text: article.time_ago
+          },
+        ].filter(Boolean) as SubInfo[];
+
+        return (
+          <article
+          key={article.rank}
           className="flex min-h-[68px] items-center gap-3 border-b border-transparent py-3 last:border-b-0"
         >
-          {/* Implement Here! */}
+          {showRank && (
+            <span className="w-4 shrink-0 text-center text-base font-semibold text-[#ed3a3a]">
+              {article.rank}
+            </span>
+          )}
+
+          {/*여기 마저 하기.*/}
+
 
           <div className="flex shrink-0 items-center gap-2 text-xs font-medium">
             <span className="flex items-center gap-1 text-[#ed3a3a]">
@@ -48,7 +77,8 @@ const ArticleList = ({
             </span>
           </div>
         </article>
-      ))}
+        );
+      })}
     </section>
   );
 };
