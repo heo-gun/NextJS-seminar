@@ -33,7 +33,7 @@ const ArticleList = ({
   data = [],
 }: ArticleListProps) => {
   return (
-    <section className="mt-5 w-full max-w-[600px] border border-[#d9dfe6] bg-white px-9 py-1">
+    <section className="mt-5 w-full max-w-150px border border-[#d9dfe6] bg-white px-9 py-1">
       {data.map((article) => {
         const sub = [
           showBoard && {
@@ -44,7 +44,7 @@ const ArticleList = ({
             text: article.writter
           },
           showHit && {
-            text: '조회 ${article.hit}'
+            text: `조회 ${article.hit}`
           },
           showTimeAgo && {
             text: article.time_ago
@@ -54,7 +54,7 @@ const ArticleList = ({
         return (
           <article
           key={article.rank}
-          className="flex min-h-[68px] items-center gap-3 border-b border-transparent py-3 last:border-b-0"
+          className="flex min-h-17px items-center gap-3 border-b border-transparent py-3 last:border-b-0"
         >
           {showRank && (
             <span className="w-4 shrink-0 text-center text-base font-semibold text-[#ed3a3a]">
@@ -62,13 +62,24 @@ const ArticleList = ({
             </span>
           )}
 
-          {/*여기 마저 하기.*/}
 
+          <div className="min-w-0 flex-1">
+            <p className={`truncate text-[15px] ${article.is_read ? "text-[#a0a0a0]" : "text-black"}`}>
+              {article.title}</p>
+            {sub.length > 0 && (
+              <div className="flex gap-2 mt-1 text-xs text-[#a3a3a3]">
+                {sub.map((info, idx) =>
+                  <span key={idx}>
+                    {idx > 0 && " · "}
+                    <span className={info.strong ? "text-[#555555]" : "text-[#a3a3a3]"}>{info.text}
+                    </span>
+                  </span>
+                )}
+              </div>
+            )} 
+          </div>
 
           <div className="flex shrink-0 items-center gap-2 text-xs font-medium">
-            <span className="flex items-center gap-1 text-[#ed3a3a]">
-              <Image src={goodIcon} alt="Likes" /> {article.good}
-            </span>
             <span className="flex items-center gap-1 text-[#5b9cde]">
               <Image src={badIcon} alt="Dislikes" /> {article.bad}
             </span>
