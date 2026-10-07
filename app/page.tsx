@@ -1,8 +1,8 @@
 "use client";
 
 import ArticleList from "./ArticleList";
-import { useState } from "react";
-import { mock_article_response } from "./data/api";
+import { useEffect, useState } from "react";
+import { Article, Article_API_Response } from "./data/api";
 
 type ArticleListUiOptions = {
   showRank: boolean;
@@ -33,6 +33,16 @@ const Page = () => {
   // Implement Here! - Call API
   // use -> fetch("https://kwon.api.newbie.sparcs.net/")
   // use type Article_API_Response
+
+  const [articles, setArticles] = useState<Article[]>([]);
+  useEffect(() => {
+    fetch("https://kwon.api.newbie.sparcs.net/")
+      .then((response) => response.json())
+      .then((data: Article_API_Response) => {
+        setArticles(data.result);
+      });
+  }, []);
+
 
   const handleOptionChange = (option: keyof ArticleListUiOptions) => {
     setOptions((prev) => ({
@@ -67,7 +77,7 @@ const Page = () => {
         showWriter={options.showWriter}
         showHit={options.showHit}
         showTimeAgo={options.showTimeAgo}
-        data={mock_article_response.result}
+        data={articles}
       />
     </main>
   );
